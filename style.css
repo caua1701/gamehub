@@ -84,3 +84,42 @@ body {
 #botao-submit:hover {
    cursor: pointer;
 }
+
+@media (max-width: 1600px) {
+   .login {
+      padding: 20px;
+   }
+
+   .introducao {
+      padding: 50px;
+   }
+
+   .introducao h1{
+      font-size: 1.5rem;
+   }
+
+   .introducao img{
+      width: 200px;
+   }
+
+   .form-login{
+      gap:30px
+   }
+
+   .form-login h2{
+      font-size: 2.5rem;
+   }
+
+   .form-login form{
+      gap: 30px;
+   }
+
+   .form-login label{
+      font-size: 1rem;
+   }
+
+   .form-login input{
+      font-size: 1rem;
+      padding: 16px;
+   }
+}
