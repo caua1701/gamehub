@@ -62,11 +62,16 @@ body{
    display: flex;
    flex-direction: column;
    gap: 50px;
-   width: 100%;
+   width: 93%; 
 }
 
 .form-login label {
    font-size: 1.5rem;
+}
+
+ .form-login h3{ /* link que leva a tela de cadastro. */
+   font-size: 1.2rem;
+   text-align:center;
 }
 
 .form-login input {
@@ -126,5 +131,4 @@ body{
       padding: 16px;
    }
 
-   /* alteração feita teste */
 }
