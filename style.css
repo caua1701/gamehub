@@ -4,6 +4,7 @@
    --cor-fundo: #1d1d1d;
    --cor-secundaria: #6f167c;
    --cinza-input: #cdcdcd;
+   --cinza-escuro: #2a2a2a; 
 }
 
 * {
@@ -14,15 +15,15 @@
    font-weight: 400;
 }
 
-body {
-   background: var(--cor-fundo);
+body{
+     background-color: #2a2a2a; /* mudei a cor para dar uma tonalidade melhor. */
 }
 
 .login {
    color: white;
    max-width: 1920px;
    padding: 50px;
-   margin: auto;
+   margin:auto; 
    display: grid;
    grid-template-columns: 1fr 1fr;
    height: 100vh;
@@ -35,7 +36,7 @@ body {
    flex-direction: column;
    justify-content: center;
    align-items: center;
-   border-radius: 10px;
+    border-radius: 10px 0px 0px 10px; /* mudei a borda */
 }
 
 .introducao h1 {
@@ -48,7 +49,9 @@ body {
    flex-direction: column;
    align-items: center;
    gap: 50px;
-   padding: 50px;
+   padding: 10px; /* diminui o padding devido a borda de baixo que estava sendo cortada na pagina do cadastro. */
+   border-radius: 0px 10px 10px 0px;
+   background-color: #1d1d1d;
 }
 
 .form-login h2 {
