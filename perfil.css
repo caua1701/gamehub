@@ -1,0 +1,40 @@
+@import url("global.css");
+
+header{
+    width: 100vw;
+    background-color: var(--cor-secundaria);
+    padding: 10px;
+}
+
+nav{
+    max-width: 1200px;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 50px;
+    align-items: center;
+    margin: auto;
+
+}
+
+.perfil{
+    width: 60px;
+    height: 60px;
+    border-radius: 100px;
+    background-color: aqua;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.5rem;
+}
+
+form input{
+    width: 100%;
+    max-height: 60px;
+    padding: 20px 30px;
+    font-size: 1.5rem;
+    background-color: var(--cinza-input);
+    border: none;
+    border-radius: 10px;
+    outline: 0;
+}
