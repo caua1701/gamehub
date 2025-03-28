@@ -1,19 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
-
-:root {
-   --cor-fundo: #1d1d1d;
-   --cor-secundaria: #6f167c;
-   --cinza-input: #cdcdcd;
-   --cinza-escuro: #2a2a2a; 
-}
-
-* {
-   margin: 0;
-   padding: 0;
-   box-sizing: border-box;
-   font-family: "Poppins", Arial, sans-serif;
-   font-weight: 400;
-}
+@import url(global.css);
 
 body{
      background-color: #2a2a2a; /* mudei a cor para dar uma tonalidade melhor. */
@@ -49,7 +35,7 @@ body{
    flex-direction: column;
    align-items: center;
    gap: 50px;
-   padding: 10px; /* diminui o padding devido a borda de baixo que estava sendo cortada na pagina do cadastro. */
+   padding: 50px; /* diminui o padding devido a borda de baixo que estava sendo cortada na pagina do cadastro. */
    border-radius: 0px 10px 10px 0px;
    background-color: #1d1d1d;
 }
