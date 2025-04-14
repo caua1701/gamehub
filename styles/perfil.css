@@ -16,7 +16,7 @@ nav{
 
 }
 
-.perfil{
+.foto-perfil-header{
     width: 60px;
     height: 60px;
     border-radius: 100px;
@@ -37,4 +37,135 @@ form input{
     border: none;
     border-radius: 10px;
     outline: 0;
+}
+
+.container{
+    max-width: 1200px;
+    margin: auto;
+
+}
+
+.perfil{
+    margin-top: 50px;
+    position: relative;
+}
+
+.user-perfil{
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    gap: 30px;
+}
+
+.user-perfil h1{
+    font-size: 2.5rem;
+    color: white;
+    font-weight: bold;
+}
+
+.foto-perfil{
+    width: 140px;
+    height: 140px;
+    background-color: aqua;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 3rem;
+}
+
+.status-jogos{
+    display: flex;
+    gap: 20px;
+    color: white;
+    list-style: none;
+    margin: 20px 0;
+}
+
+.status-jogos li{
+    padding: 5px 15px;
+    background-color: var(--cinza-claro);
+    border-radius: 5px;
+    font-weight: 300;
+}
+
+.abas{
+    max-width: 100%;
+    background-color: var(--cinza-claro);
+    border-radius: 5px;
+}
+
+.abas-options{
+    color: white;
+    display: flex;
+    list-style: none;
+
+}
+
+.abas-options li{
+    padding: 10px 25px;
+    font-size: 1.25rem;
+    font-weight: 600;
+    border-radius: 5px;
+}
+
+.abas-options li:hover{
+    background-color: var(--cor-secundaria);
+}
+
+#aba-atual{
+    background-color: var(--cor-secundaria);
+}
+
+.lista-jogos{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 50px;
+    margin-top: 50px;
+}
+
+.lista-amigos{
+    margin-top: 50px;
+    max-width: 100%;
+}
+
+.amigos li{
+    display: flex;
+    align-items: center;
+    font-size: 1.25rem;
+    justify-content: space-between;
+    padding: 20px;
+    background-color: var(--cinza-claro);
+}
+
+.amigos li:nth-child(even){
+    background-color: #49464C;
+}
+
+.amigo{
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    color: white;
+    font-weight: 500;
+}
+
+.foto-perfil-amigo{
+    width: 50px;
+    height: 50px;
+    border-radius: 100px;
+    background-color: aqua;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.5rem;
+    color: black;
+}
+
+.acoes{
+    display: flex;
+    gap: 10px;
 }
