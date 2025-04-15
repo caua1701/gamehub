@@ -20,6 +20,11 @@
     background: var(--cor-fundo);
  }
 
+ section{
+   max-width: 1200px;
+   margin: auto;
+}
+
  a{
    color: white;
    text-decoration: none;
