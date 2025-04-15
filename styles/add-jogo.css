@@ -48,75 +48,66 @@ nav {
    outline: 0;
 }
 
-.titulo-jogo {
-   margin-top: 50px;
-   display: flex;
-   gap: 30px;
-   align-items: end;
-   color: white;
+section {
+   margin-bottom: 100px;
 }
 
-.titulo-jogo h1 {
+section h1 {
+   margin: 50px 0;
+   color: white;
    font-size: 2.5rem;
-   margin-bottom: 50px;
    font-weight: bold;
+   text-align: center;
 }
 
-.status-jogos {
-   display: flex;
-   justify-content: space-between;
-   color: white;
-   list-style: none;
-   margin: 20px 0;
-}
-
-.status-jogos span {
-   padding: 5px 15px;
-   background-color: var(--cinza-claro);
-   border-radius: 5px;
-   font-weight: 300;
-   margin-right: 20px;
-}
-
-.abas {
-   max-width: 100%;
-   background-color: var(--cinza-claro);
-   border-radius: 5px;
-}
-
-.abas-options {
-   color: white;
-   display: flex;
-   list-style: none;
-}
-
-.abas-options li {
-   padding: 10px 25px;
-   font-size: 1.25rem;
-   font-weight: 600;
-   border-radius: 5px;
-}
-
-.abas-options li:hover {
-   background-color: var(--cor-secundaria);
-}
-
-#aba-atual {
-   background-color: var(--cor-secundaria);
-}
-
-.sobre {
+.form-jogo {
    background-color: var(--cinza-claro);
    padding: 20px;
-   color: white;
-   margin-top: 30px;
+   border-radius: 5px;
 }
 
-.sobre h2 {
-   font-size: 2.25rem;
+.form-jogo label {
+   color: white;
+   font-size: 1.225rem;
    font-weight: bold;
 }
 
-.sobre p {
-   font-size: 1.25rem;
+.input-text {
+   display: flex;
+   flex-direction: column;
+   gap: 20px;
+}
+
+.input-text input,
+.input-text textarea {
+   background-color: var(--cinza-input);
+   outline: none;
+   border: none;
+   border-radius: 5px;
+   padding: 10px;
+   font-size: 1.125rem;
+}
+
+.input-checkbox {
+   margin-top: 20px;
+}
+
+.input-checkbox label {
+   margin-right: 10px;
+}
+
+.input-submit input {
+   background-color: var(--cor-secundaria);
+   outline: none;
+   border: none;
+   border-radius: 5px;
+   padding: 10px;
+   font-size: 1.125rem;
+   color: white;
+   margin-top: 20px;
+   width: 100%;
+}
+
+.input-submit input:hover {
+   cursor: pointer;
 }
