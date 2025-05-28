@@ -1,0 +1,144 @@
+[33mcommit 0a327397c44b289c1a91ddb27c38bf7997656292[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m
+Author: Cauã Lopes Farias <caualf1701@gmail.com>
+Date:   Wed May 21 01:04:25 2025 -0300
+
+    Migração ao php. Login, cadastro e esqueceu a senha funcionando
+
+[33mcommit 3defdf05b9c5b0701ee73482c8298310e3880bcf[m
+Author: Cauã Lopes <caualf1701@gmail.com>
+Date:   Tue Apr 15 20:42:37 2025 -0300
+
+    Correção
+
+[33mcommit 9aebd67c57ba2fbdc1e42e0e0e647fb3950de68a[m
+Author: Cauã Lopes <caualf1701@gmail.com>
+Date:   Tue Apr 15 19:27:08 2025 -0300
+
+    Corrigido problema style
+
+[33mcommit f065bc17a136c5f6dc7f32f7c541cb97835df3a8[m
+Author: Cauã Lopes <caualf1701@gmail.com>
+Date:   Tue Apr 15 18:40:16 2025 -0300
+
+    mudança na página de jogo
+
+[33mcommit 4b6c65555127fbc140bbc0f0adfece6abaa6e6ae[m
+Author: Cauã Lopes <caualf1701@gmail.com>
+Date:   Tue Apr 15 18:39:52 2025 -0300
+
+    Adicionado página de adionar jogo
+
+[33mcommit 20ea26e9481610a428bd9faa62fbb9adff43e4bb[m
+Author: Cauã Lopes <caualf1701@gmail.com>
+Date:   Tue Apr 15 16:12:23 2025 -0300
+
+    Removido php
+
+[33mcommit 32b1729d0ef75af0df39c50d69ba2603b58f5d8f[m
+Author: Cauã Lopes <caualf1701@gmail.com>
+Date:   Tue Apr 15 10:59:32 2025 -0300
+
+    Adicionado página de jogos
+
+[33mcommit 96e673b52bfb9b2d0f126958524a019faa7ded58[m
+Author: Cauã Lopes <caualf1701@gmail.com>
+Date:   Mon Apr 14 11:19:13 2025 -0300
+
+    Criado perfil de usuário e abas de jogos e amigos
+
+[33mcommit d25f4a58ec37f3a573511560ec85c0a08e21b273[m
+Author: Cauã Lopes <caualf1701@gmail.com>
+Date:   Wed Apr 9 06:57:51 2025 -0300
+
+    Adicionado login e cadastro via php
+
+[33mcommit 139bc2644b2c418949edc597b0b9cfdb86e8bff0[m
+Author: Josué_Reges <jb3172797@gmail.com>
+Date:   Wed Apr 2 09:28:01 2025 -0300
+
+    Crição de redefinição de senha e ajustes de redirecionamento
+
+[33mcommit 09a1f99e2c3fa978f1c79ca7001742c6dff7879a[m
+Author: Cauã Lopes <caualf1701@gmail.com>
+Date:   Tue Apr 1 22:48:00 2025 -0300
+
+    placeholder e responsividade
+
+[33mcommit 5bb5ac99aa05057d51145c9ecde9e3e187a7d3f4[m
+Author: Cauã Lopes <caualf1701@gmail.com>
+Date:   Fri Mar 28 10:49:32 2025 -0300
+
+    Adiciona botao para retornar ao login/cadastro
+
+[33mcommit 23e499882e375d7e33787f57981845f592497177[m
+Author: Josué_Reges <jb3172797@gmail.com>
+Date:   Fri Mar 28 09:02:07 2025 -0300
+
+    Adicionado fundo novo para login/cadastro. E organização de pasta
+
+[33mcommit 31c5d3a2802536979c0f26556b5dccd65fe98acb[m
+Author: Josué_Reges <jb3172797@gmail.com>
+Date:   Thu Mar 27 17:35:32 2025 -0300
+
+    login modificado
+
+[33mcommit a0b2abba82129e1807387ba84da6095dbc5e4f02[m
+Author: Josué_Reges <jb3172797@gmail.com>
+Date:   Thu Mar 27 17:28:54 2025 -0300
+
+    alteraçao no login
+
+[33mcommit d9021725a2c55eca12adf83555d749b4245dd79c[m
+Merge: e9f6151 aa20fcf
+Author: Josué_Reges <jb3172797@gmail.com>
+Date:   Thu Mar 27 17:27:38 2025 -0300
+
+    Merge branch 'main' of https://github.com/caua1701/gamehub
+
+[33mcommit e9f6151aeac219477184406e2ac0a86f7cc50c90[m
+Author: Josué_Reges <jb3172797@gmail.com>
+Date:   Thu Mar 27 17:24:54 2025 -0300
+
+    alteraçoes da pagina de login
+
+[33mcommit 90cc88bd32bb7efdf296021de17bea3ad3992301[m
+Author: Josué_Reges <jb3172797@gmail.com>
+Date:   Thu Mar 27 17:20:49 2025 -0300
+
+    tela de login modificada 3
+
+[33mcommit aa20fcfc8cfb359e69935c272a40aab7b3ecd334[m
+Author: Cauã Lopes <caualf1701@gmail.com>
+Date:   Thu Mar 27 11:17:50 2025 -0300
+
+    Criar página de perfil e criar Header
+
+[33mcommit fbb43bb4db0c4ca7bd74f2fe0ce76ee86c9d1aa6[m
+Author: Cauã Lopes <caualf1701@gmail.com>
+Date:   Thu Mar 27 11:17:24 2025 -0300
+
+    Criar style global
+
+[33mcommit b44c3dc1769afbae9ba157489a9f7530eb197d89[m
+Author: Cauã Lopes <caualf1701@gmail.com>
+Date:   Thu Mar 27 10:47:45 2025 -0300
+
+    alterar type dos inputs
+
+[33mcommit 374fddf4f1dede7b0e9e7366afdfee57bf83128a[m
+Author: Josué_Reges <jb3172797@gmail.com>
+Date:   Thu Mar 27 10:39:01 2025 -0300
+
+    Teste
+
+[33mcommit 02a4a956b3908ee1b23448cfb11f2357a753091f[m
+Author: Cauã Lopes <caualf1701@gmail.com>
+Date:   Thu Mar 27 10:25:25 2025 -0300
+
+    Adicionar responsividade para notebooks
+
+[33mcommit 63a97ae9b52ad097539add060d7c5a29005b0a97[m
+Author: Cauã Lopes <caualf1701@gmail.com>
+Date:   Tue Mar 25 16:57:33 2025 -0300
+
+    Adicionado página de login e de cadastro
