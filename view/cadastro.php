@@ -1,41 +1,10 @@
 <?php
-require_once '../dao/UsuarioDAO.php';
+session_start();
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $dao = new UsuarioDAO();
-
-    if ($dao->existeUsuario($_POST['nome'])) {
-        $mensagem = urlencode("Nome de usuário informado já está cadastrado! Tente outro nome de usuário ou realize o login!");
-        header("Location: cadastro.php?mensagem=$mensagem");
-        exit;
-    }
-
-    if ($dao->existeEmail($_POST['email'])) {
-        $mensagem = urlencode("Email informado já está cadastrado! Tente outro email ou realize o login!");
-        header("Location: cadastro.php?mensagem=$mensagem");
-        exit;
-
-    }
-    
-    $usuario = new Usuario();
-    $usuario->setNomeUsuario($_POST['nome']);
-    $usuario->setEmail($_POST['email']);
-    $usuario->setSenha($_POST['senha']);
-
-    $dao = new UsuarioDAO();
-    $dao->cadastrar($usuario);
-
-    header('Location: login.php');
-    exit;
+if (isset($_SESSION['logged']) && $_SESSION['logged']) {
+    header('Location: /gamehub/');
 }
 ?>
-
-<!-- <form method="post">
-    Nome: <input type="text" name="nome" required><br>
-    Email: <input type="email" name="email" required><br>
-    Senha: <input type="password" name="senha" required><br>
-    <button type="submit">Cadastrar</button>
-</form> -->
 
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -44,19 +13,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cadastrar</title>
-    <link rel="stylesheet" href="../assets/css/cadastro.css">
+    <link rel="stylesheet" href="assets/css/cadastro.css">
 </head>
 
 <body>
     <main class="login">
         <article class="introducao">
             <span class="link-volta">Tem conta? <a href="login.php">Clique aqui</a></span>
-            <img src="../assets/img/logo.png" alt="" width="300px">
+            <img src="assets/img/logo.png" alt="" width="300px">
             <h1>Conecte a milhares de jogadores ao redor do mundo no Gamehub.</h1>
         </article>
         <article class="form-login">
             <h2>Cadastrar</h2>
-            <form method="POST">
+            <form method="POST" action="/gamehub/auth/cadastro">
                 <div>
                     <label for="nome
                     ">Nome de Usuário:</label>

@@ -1,6 +1,11 @@
 <?php
-// Recebe a mensagem pela URL
-$mensagem = isset($_GET['msg']) ? htmlspecialchars($_GET['msg']) : 'Nenhuma mensagem definida.';
+//Recebe a mensagem pela URL
+if (!$_GET === null || !$_GET == "") {
+    $mensagem = htmlspecialchars($_GET['msg']);
+}
+else {
+    $mensagem = "Nenhuma mensagem encontrada.";
+}
 ?>
 
 <!DOCTYPE html>
@@ -8,7 +13,6 @@ $mensagem = isset($_GET['msg']) ? htmlspecialchars($_GET['msg']) : 'Nenhuma mens
 <head>
     <meta charset="UTF-8">
     <title>Mensagem</title>
-    <link rel="stylesheet" href="../assets/css/mensagem.css"> <!-- Opcional -->
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -46,7 +50,7 @@ $mensagem = isset($_GET['msg']) ? htmlspecialchars($_GET['msg']) : 'Nenhuma mens
 <body>
     <div class="caixa">
         <h2><?php echo $mensagem; ?></h2>
-        <a href="login.php" class="botao-voltar">Voltar para o login</a>
+        <a href="/gamehub/login" class="botao-voltar">Voltar para o login</a>
     </div>
 </body>
 </html>

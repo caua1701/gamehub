@@ -1,7 +1,7 @@
 <?php
 
-require_once '../model/Usuario.php';
-require_once '../utils/EmailHelper.php';
+require_once 'model/Usuario.php';
+require_once 'utils/EmailHelper.php';
 
 class AuthController {
     public function cadastrar() {
@@ -10,13 +10,13 @@ class AuthController {
             
             if ($usuario->existeUsuario($_POST['nome'])) {
                 $mensagem = urlencode("Nome de usuário informado já está cadastrado! Tente outro nome de usuário ou realize o login!");
-                header("Location: cadastro.php?mensagem=$mensagem");
+                header("Location: /gamehub/mensagem?msg=$mensagem");
                 exit;
             }
     
             if ($usuario->existeEmail($_POST['email'])) {
                 $mensagem = urlencode("Email informado já está cadastrado! Tente outro email ou realize o login!");
-                header("Location: cadastro.php?mensagem=$mensagem");
+                header("Location: /gamehub/mensagem?msg=$mensagem");
                 exit;
             }
 
@@ -24,6 +24,8 @@ class AuthController {
             $usuario->setEmail($_POST["email"]);
             $usuario->setSenha($_POST["senha"]);
             $usuario->cadastrar();
+            header("Location: /gamehub/login");
+            exit;
         }
     }
 
@@ -33,13 +35,15 @@ class AuthController {
 
         if ($resultado) {
             session_start();
-            $_SESSION['user'] = $resultado['nome'];
-            header('Location: ../view/perfil.php');
+            $_SESSION['logged'] = true;
+            $_SESSION['user-id'] = $resultado['id'];
+            $_SESSION['user-name'] = $resultado['nome'];
+            header('Location: /gamehub/');
             exit;
         }
         else {
             $mensagem = urlencode("Email ou senha inválidos!");
-            header("Location: ../view/login.php?mensagem=$mensagem");
+            header("Location: /gamehub/mensagem?msg=$mensagem");
             exit;
         }
     }
@@ -48,7 +52,7 @@ class AuthController {
         session_start();
         $_SESSION = [];
         session_destroy();
-        header('Location: /login');
+        header('Location: /gamehub/login');
         exit;
     }
     
@@ -74,7 +78,7 @@ class AuthController {
                 EmailHelper::enviar($email, "Redefinir Senha!", $mensagem);
             }
 
-            header('Location: ../view/mensagem.php?msg=Se o e-mail existir, você receberá o link');
+            header('Location: /gamehub/mensagem?msg=Se o e-mail existir, você receberá o link');
         }
     }
 
@@ -91,5 +95,105 @@ class AuthController {
                 $usuario->atualizarSenha( $resultado['id'], $novaSenhaHash );
             }
         }
+    }
+
+    public function mostrarPerfil($nomeUsuario) {
+        $usuario = new Usuario();
+        $dados = $usuario->buscarPorNome($nomeUsuario);
+
+        if ($dados) {
+            // Envia os dados para a view
+            require 'view/perfil.php';
+        } else {
+            http_response_code(404);
+            echo "Usuário não encontrado!";
+        }
+    }
+
+    public function editarPerfil($nomePerfil) {
+        session_start();
+
+        // Verifica se está logado
+        if (!isset($_SESSION['user-id']) || !isset($_SESSION['user-name'])) {
+            header('Location: /gamehub/login');
+            exit;
+        }
+
+        // Confere se a slug da URL é igual à do usuário logado
+        if ($_SESSION['user-name'] !== $nomePerfil) {
+            header('Location: /gamehub/mensagem?msg=Acesso não autorizado.');
+            exit;
+        }
+
+        $usuario = new Usuario();
+        $dados = $usuario->buscarPorId($_SESSION['user-id']); // Seguro: via ID
+
+        require 'view/editar_perfil.php';
+    }
+
+    public function salvarEdicao() {
+        session_start();
+     
+        if (!isset($_SESSION['user-id'])) {
+            header('Location: /gamehub/login');
+            exit;
+        }
+     
+        // Verifica se o ID enviado é o mesmo do usuário logado
+        if ($_POST['id'] != $_SESSION['user-id']) {
+            header('Location: /gamehub/mensagem?msg=Acesso não autorizado.');
+            exit;
+        }
+     
+        $idUsuario = $_SESSION['user-id']; // Use o ID da sessão para segurança
+        $nomeNovo = trim($_POST['nome']); // Use trim para remover espaços em branco
+        $emailNovo = trim($_POST['email']);
+     
+        // (Opcional) Validações básicas
+        if (empty($nomeNovo) || empty($emailNovo)) {
+            $mensagem = urlencode("Todos os campos são obrigatórios.");
+            header('Location: /gamehub/mensagem?msg=' . $mensagem);
+            exit;
+        }
+
+        $usuario = new Usuario();
+
+        // 1. Obter o nome de usuário atual do banco de dados antes da atualização
+        $dadosAtuais = $usuario->buscarPorId($idUsuario);
+        $nomeUsuarioAtual = $dadosAtuais['nome'];
+
+        // 2. Verificar se o novo nome de usuário é diferente do atual
+        if ($nomeNovo !== $nomeUsuarioAtual) {
+            // Se for diferente, verificar se o novo nome já existe
+            if ($usuario->existeUsuario($nomeNovo)) {
+                $mensagem = urlencode("Nome de usuário '$nomeNovo' já está em uso. Por favor, escolha outro.");
+                header('Location: /gamehub/perfil/' . urlencode($nomeUsuarioAtual) . '/editar?msg=' . $mensagem); // Redireciona de volta para a edição com o nome antigo na URL e mensagem
+                exit;
+            }
+        }
+        
+        // 3. Verificar se o novo email é diferente do atual
+        // Se for diferente, verificar se o novo email já existe
+        if ($emailNovo !== $dadosAtuais['email']) {
+            if ($usuario->existeEmail($emailNovo)) {
+                $mensagem = urlencode("Email '$emailNovo' já está em uso. Por favor, escolha outro.");
+                header('Location: /gamehub/perfil/' . urlencode($nomeUsuarioAtual) . '/editar?msg=' . $mensagem);
+                exit;
+            }
+        }
+
+        // 4. Atualizar os dados no banco de dados
+        $sucesso = $usuario->atualizarDados($idUsuario, $nomeNovo, $emailNovo);
+     
+        if ($sucesso) {
+            // 5. Se a atualização foi bem-sucedida, atualizar a sessão
+            $_SESSION['user-name'] = $nomeNovo;
+            $mensagem = urlencode("Perfil atualizado com sucesso!");
+            header('Location: /gamehub/perfil/' . urlencode($nomeNovo) . '/editar?sucesso=1&msg=' . $mensagem);
+        } else {
+            $mensagem = urlencode("Ocorreu um erro ao atualizar o perfil. Tente novamente.");
+            header('Location: /gamehub/perfil/' . urlencode($nomeUsuarioAtual) . '/editar?erro=1&msg=' . $mensagem);
+        }
+        exit;
     }
 }

@@ -1,5 +1,9 @@
 @import url("global.css");
 
+body{
+   padding-bottom: 50px;
+}
+
 header {
    width: 100%;
    background-color: var(--cor-secundaria);
@@ -121,6 +125,36 @@ form input {
 .lista-amigos {
    margin-top: 50px;
    max-width: 100%;
+}
+
+.editar-perfil {
+   background-color: var(--cinza-claro);
+   border-radius: 5px;
+   padding: 20px;
+   margin-top: 50px;
+   max-width: 100%;
+   color: white;
+}
+
+.editar-perfil h2 {
+   text-align: center;
+   margin-bottom: 30px;
+}
+
+.editar-perfil form{
+   display: grid;
+   grid-template-columns: 1fr;
+   gap: 15px;
+}
+
+.editar-perfil button{
+   padding: 10px;
+   background-color: var(--cor-secundaria);
+   border: none;
+   outline: none;
+   font-size: 1.25rem;
+   color: white;
+   border-radius: 5px;
 }
 
 .amigos li {

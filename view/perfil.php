@@ -1,21 +1,29 @@
 <?php
-require_once 'verifica_login.php';
+session_start();
+
+if (isset($_SESSION['logged']) && $_SESSION['logged']) {
+    $user_id = $_SESSION['user-id'];
+    $user_name = $_SESSION['user-name'];
+} else {
+    header('Location: /gamehub/login');
+    exit;
+}
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Perfil - MisterCaua</title>
+    <title>Perfil - <?php echo htmlspecialchars($dados['nome'])?></title>
     <link rel="stylesheet" href="../assets/css/perfil.css">
 </head>
 
 <body>
     <header>
         <nav>
-            <img src="img/logo.png" alt="" width="60px">
+            <img src="../assets/img/logo.png" alt="" width="60px">
             <form action="">
                 <input type="text" name="" id="" placeholder="Procurar jogos">
             </form>
@@ -31,8 +39,15 @@ require_once 'verifica_login.php';
                 <div class="foto-perfil">
                     C
                 </div>
-                <h1>MisterCaua</h1>
-                <a href="logout.php">Sair</a>
+                <h1><?php echo htmlspecialchars($dados['nome'])?></h1>
+                <?php
+                if (isset($dados['id']) && $dados['id'] == $_SESSION['user-id']) {
+                ?>
+                    <a href="/gamehub/logout">Sair</a>
+                <?php
+                }
+                ?>
+                
             </div>
         </div>
         <ul class="status-jogos">
@@ -47,12 +62,17 @@ require_once 'verifica_login.php';
                 <a href="perfil-jogos.html">
                     <li id="aba-atual">Jogos</li>
                 </a>
-                <a href="perfil-amigos.html">
-                    <li>Amigos</li>
-                </a>
-                <a href="perfil-amizade-pendente.html">
-                    <li>Amizades Pendentes</li>
-                </a>
+                <?php
+                // Certifique-se de que a sessão está iniciada e o usuário está logado
+                // E que o ID do perfil sendo visualizado é o mesmo do usuário logado
+                if (isset($dados['id']) && $dados['id'] == $_SESSION['user-id']) {
+                ?>
+                    <a href="/gamehub/perfil/<?php echo htmlspecialchars($user_name); ?>/editar">
+                        <li>Editar</li>
+                    </a>
+                <?php
+                }
+                ?>
             </ul>
         </div>
         <div class="lista-jogos">
