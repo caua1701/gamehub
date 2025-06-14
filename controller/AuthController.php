@@ -38,6 +38,10 @@ class AuthController {
             $_SESSION['logged'] = true;
             $_SESSION['user-id'] = $resultado['id'];
             $_SESSION['user-name'] = $resultado['nome'];
+
+            if ($resultado['id'] === 1) {
+                $_SESSION['admin'] = true;
+            }
             header('Location: /gamehub/');
             exit;
         }
@@ -171,6 +175,11 @@ class AuthController {
                 exit;
             }
         }
+        else {
+            $mensagem = urlencode("Nome de usuário igual ao atual.");
+            header('Location: /gamehub/perfil/' . urlencode($nomeUsuarioAtual) . '/editar?sucesso=false&msg=' . $mensagem);
+            exit;
+        }
         
         // 3. Verificar se o novo email é diferente do atual
         // Se for diferente, verificar se o novo email já existe
@@ -181,6 +190,11 @@ class AuthController {
                 exit;
             }
         }
+        else {
+            $mensagem = urlencode("E-mail de usuário igual ao atual.");
+            header('Location: /gamehub/perfil/' . urlencode($nomeUsuarioAtual) . '/editar?sucesso=false&msg=' . $mensagem);
+            exit;
+        }
 
         // 4. Atualizar os dados no banco de dados
         $sucesso = $usuario->atualizarDados($idUsuario, $nomeNovo, $emailNovo);
@@ -189,7 +203,7 @@ class AuthController {
             // 5. Se a atualização foi bem-sucedida, atualizar a sessão
             $_SESSION['user-name'] = $nomeNovo;
             $mensagem = urlencode("Perfil atualizado com sucesso!");
-            header('Location: /gamehub/perfil/' . urlencode($nomeNovo) . '/editar?sucesso=1&msg=' . $mensagem);
+            header('Location: /gamehub/perfil/' . urlencode($nomeNovo) . '/editar?sucesso=true&msg=' . $mensagem);
         } else {
             $mensagem = urlencode("Ocorreu um erro ao atualizar o perfil. Tente novamente.");
             header('Location: /gamehub/perfil/' . urlencode($nomeUsuarioAtual) . '/editar?erro=1&msg=' . $mensagem);

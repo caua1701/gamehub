@@ -1,4 +1,6 @@
 <?php
+include 'view/template/header.php';
+
 session_start();
 
 if (isset($_SESSION['logged']) && $_SESSION['logged']) {
@@ -21,17 +23,6 @@ if (isset($_SESSION['logged']) && $_SESSION['logged']) {
 </head>
 
 <body>
-    <header>
-        <nav>
-            <img src="../assets/img/logo.png" alt="" width="60px">
-            <form action="">
-                <input type="text" name="" id="" placeholder="Procurar jogos">
-            </form>
-            <div class="foto-perfil-header">
-                C
-            </div>
-        </nav>
-    </header>
     <section>
         <div class="perfil">
             <img class="img-banner" src="../assets/img/banner.png" alt="Banner do perfil">

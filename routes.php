@@ -24,18 +24,33 @@ if (preg_match('#^/gamehub/perfil/([a-zA-Z0-9-_]+)/editar$#', $uri, $matches)) {
 switch ($uri) {
     case '/gamehub/':
         session_start();
-
         if (isset($_SESSION['user-name'])) {
             // Redireciona para o perfil do próprio usuário
             $nome = $_SESSION['user-name'];
             header("Location: /gamehub/perfil/$nome");
-            exit;
         }
-        break;
+        else {
+            header('Location: /gamehub/login');
+            
+        }
+        exit;
+
+    case '/gamehub/admin':
+        session_start();
+        // Verifica se a sessão está ativa e se o usuário é um administrador
+        if (isset($_SESSION['logged']) && $_SESSION['logged'] && ($_SESSION['admin'])) {
+            // Inclua a view do painel de administração
+            require 'view/admin.php';
+        } else {
+            http_response_code(403); // Status code 403 Forbidden (Acesso Proibido)
+            echo "Acesso negado. Você não tem permissão para acessar esta página.";
+        }
+        exit; // Importante para parar a execução após lidar com a rota
+
     case '/gamehub/cadastro':
         // Mostra a página de login
         require 'view/cadastro.php';
-        break;
+        exit;
 
     case '/gamehub/auth/cadastro':
         if ($method === 'POST') {
@@ -46,11 +61,11 @@ switch ($uri) {
             http_response_code(405);
             echo "Método não permitido";
         }
-        break;
+        exit;
     case '/gamehub/login':
         // Mostra a página de login
         require 'view/login.php';
-        break;
+        exit;
 
     case '/gamehub/auth/login':
         if ($method === 'POST') {
@@ -61,26 +76,25 @@ switch ($uri) {
             http_response_code(405);
             echo "Método não permitido";
         }
-        break;
+        exit;
     case "/gamehub/logout":
         require 'controller/AuthController.php';
         $controller = new AuthController();
         $controller->logout(); // processa o formulário
-        break;
+        exit;
     case "/gamehub/mensagem":
         require 'view/mensagem.php';
-        break;
+        exit;
 
     case "/gamehub/atualizar-perfil":
         if ($method === 'POST') {
             require 'controller/AuthController.php';
-        $controller = new AuthController();
-        $controller->salvarEdicao();
-        exit;
+            $controller = new AuthController();
+            $controller->salvarEdicao();
         }
-        break;
+        exit;
     default:
         http_response_code(404);
         echo "404 - Página não encontrada";
-        break;
+        exit;
 }
