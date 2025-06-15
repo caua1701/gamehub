@@ -14,35 +14,9 @@ include 'view/template/mensagem.php';
 
 <body>
     <section>
-        <div class="perfil">
-            <img class="img-banner" src="../../assets/img/banner.png" alt="Banner do perfil">
-            <div class="user-perfil">
-                <div class="foto-perfil">
-                    C
-                </div>
-                <h1><?php echo htmlspecialchars($dados['nome'])?></h1>
-            </div>
-        </div>
-        <ul class="status-jogos">
-            <li>5 Planejando</li>
-            <li>5 Zerados</li>
-            <li>15 Jogando</li>
-        </ul>
-    </section>
-    <section>
-        <div class="abas">
-            <ul class="abas-options">
-                <a href="/gamehub/">
-                    <li>Jogos</li>
-                </a>
-                <a href="">
-                    <li id="aba-atual">Editar</li>
-                </a>
-            </ul>
-        </div>
         <div class="editar-perfil">
             <h2>Editar Perfil</h2>
-            <form action="/gamehub/atualizar-perfil" method="POST">
+            <form action="/atualizar-perfil" method="POST">
                 <input type="hidden" name="id" value="<?= htmlspecialchars($dados['id']) ?>">
                 <label>Nome: 
                 <input type="text" name="nome" value="<?= htmlspecialchars($dados['nome']) ?>">

@@ -1,7 +1,8 @@
 <?php
+$root = $_SERVER['DOCUMENT_ROOT'];
 
-require_once 'model/Usuario.php';
-require_once 'utils/EmailHelper.php';
+require_once $root.'/model/Usuario.php';
+require_once $root.'/utils/EmailHelper.php';
 
 class AuthController {
     public function cadastrar() {
@@ -10,13 +11,13 @@ class AuthController {
             
             if ($usuario->existeUsuario($_POST['nome'])) {
                 $mensagem = urlencode("Nome de usuário informado já está cadastrado! Tente outro nome de usuário ou realize o login!");
-                header("Location: /gamehub/mensagem?msg=$mensagem");
+                header("Location: /mensagem?msg=$mensagem");
                 exit;
             }
     
             if ($usuario->existeEmail($_POST['email'])) {
                 $mensagem = urlencode("Email informado já está cadastrado! Tente outro email ou realize o login!");
-                header("Location: /gamehub/mensagem?msg=$mensagem");
+                header("Location: /mensagem?msg=$mensagem");
                 exit;
             }
 
@@ -24,7 +25,7 @@ class AuthController {
             $usuario->setEmail($_POST["email"]);
             $usuario->setSenha($_POST["senha"]);
             $usuario->cadastrar();
-            header("Location: /gamehub/login");
+            header("Location: /login");
             exit;
         }
     }
@@ -42,12 +43,12 @@ class AuthController {
             if ($resultado['id'] === 1) {
                 $_SESSION['admin'] = true;
             }
-            header('Location: /gamehub/');
+            header('Location: /');
             exit;
         }
         else {
             $mensagem = urlencode("Email ou senha inválidos!");
-            header("Location: /gamehub/mensagem?msg=$mensagem");
+            header("Location: /mensagem?msg=$mensagem");
             exit;
         }
     }
@@ -56,7 +57,7 @@ class AuthController {
         session_start();
         $_SESSION = [];
         session_destroy();
-        header('Location: /gamehub/login');
+        header('Location: /login');
         exit;
     }
     
@@ -72,17 +73,17 @@ class AuthController {
                 $expirar = date('Y-m-d H:i:s', strtotime('+1 hour'));
                 $usuario->salvarToken($email, $token, $expirar);
 
-                $link = "http://localhost/gamehub/view/redefinir_senha.php?token=$token";
+                $link = "http://localhost/view/redefinir_senha.php?token=$token";
                 $mensagem = "
                 <h2>Recuperação de senha</h2>
                 <p>Olá, clique no link abaixo para redefinir sua senha (válido por 1 hora):</p>
                 <p><a href='$link'>Redefinir senha</a></p>
                 ";
-
+                
                 EmailHelper::enviar($email, "Redefinir Senha!", $mensagem);
             }
 
-            header('Location: /gamehub/mensagem?msg=Se o e-mail existir, você receberá o link');
+            header('Location: /mensagem?msg=Se o e-mail existir, você receberá o link');
         }
     }
 
@@ -97,6 +98,12 @@ class AuthController {
             if ($resultado) {
                 $novaSenhaHash = password_hash($senhaNova, PASSWORD_DEFAULT);
                 $usuario->atualizarSenha( $resultado['id'], $novaSenhaHash );
+
+                header('Location: /');
+                exit;
+            }
+            else {
+                header('Location: /mensagem?msg=Token Inválido ou expirado.');
             }
         }
     }
@@ -114,18 +121,12 @@ class AuthController {
         }
     }
 
-    public function editarPerfil($nomePerfil) {
+    public function editarPerfil() {
         session_start();
 
         // Verifica se está logado
-        if (!isset($_SESSION['user-id']) || !isset($_SESSION['user-name'])) {
-            header('Location: /gamehub/login');
-            exit;
-        }
-
-        // Confere se a slug da URL é igual à do usuário logado
-        if ($_SESSION['user-name'] !== $nomePerfil) {
-            header('Location: /gamehub/mensagem?msg=Acesso não autorizado.');
+        if (!isset($_SESSION['logged'])) {
+            header('Location: /login');
             exit;
         }
 
@@ -133,19 +134,20 @@ class AuthController {
         $dados = $usuario->buscarPorId($_SESSION['user-id']); // Seguro: via ID
 
         require 'view/editar_perfil.php';
+        exit;
     }
 
     public function salvarEdicao() {
         session_start();
      
-        if (!isset($_SESSION['user-id'])) {
-            header('Location: /gamehub/login');
+        if (!isset($_SESSION['logged'])) {
+            header('Location: /login');
             exit;
         }
      
         // Verifica se o ID enviado é o mesmo do usuário logado
         if ($_POST['id'] != $_SESSION['user-id']) {
-            header('Location: /gamehub/mensagem?msg=Acesso não autorizado.');
+            header('Location: /mensagem?msg=Acesso não autorizado.');
             exit;
         }
      
@@ -156,7 +158,7 @@ class AuthController {
         // (Opcional) Validações básicas
         if (empty($nomeNovo) || empty($emailNovo)) {
             $mensagem = urlencode("Todos os campos são obrigatórios.");
-            header('Location: /gamehub/mensagem?msg=' . $mensagem);
+            header('Location: /mensagem?msg=' . $mensagem);
             exit;
         }
 
@@ -171,14 +173,9 @@ class AuthController {
             // Se for diferente, verificar se o novo nome já existe
             if ($usuario->existeUsuario($nomeNovo)) {
                 $mensagem = urlencode("Nome de usuário '$nomeNovo' já está em uso. Por favor, escolha outro.");
-                header('Location: /gamehub/perfil/' . urlencode($nomeUsuarioAtual) . '/editar?msg=' . $mensagem); // Redireciona de volta para a edição com o nome antigo na URL e mensagem
+                header('Location: /editar?msg=' . $mensagem); // Redireciona de volta para a edição com o nome antigo na URL e mensagem
                 exit;
             }
-        }
-        else {
-            $mensagem = urlencode("Nome de usuário igual ao atual.");
-            header('Location: /gamehub/perfil/' . urlencode($nomeUsuarioAtual) . '/editar?sucesso=false&msg=' . $mensagem);
-            exit;
         }
         
         // 3. Verificar se o novo email é diferente do atual
@@ -186,14 +183,9 @@ class AuthController {
         if ($emailNovo !== $dadosAtuais['email']) {
             if ($usuario->existeEmail($emailNovo)) {
                 $mensagem = urlencode("Email '$emailNovo' já está em uso. Por favor, escolha outro.");
-                header('Location: /gamehub/perfil/' . urlencode($nomeUsuarioAtual) . '/editar?msg=' . $mensagem);
+                header('Location: /editar?msg=' . $mensagem);
                 exit;
             }
-        }
-        else {
-            $mensagem = urlencode("E-mail de usuário igual ao atual.");
-            header('Location: /gamehub/perfil/' . urlencode($nomeUsuarioAtual) . '/editar?sucesso=false&msg=' . $mensagem);
-            exit;
         }
 
         // 4. Atualizar os dados no banco de dados
@@ -203,11 +195,57 @@ class AuthController {
             // 5. Se a atualização foi bem-sucedida, atualizar a sessão
             $_SESSION['user-name'] = $nomeNovo;
             $mensagem = urlencode("Perfil atualizado com sucesso!");
-            header('Location: /gamehub/perfil/' . urlencode($nomeNovo) . '/editar?sucesso=true&msg=' . $mensagem);
+            header('Location: /editar?sucesso=true&msg=' . $mensagem);
         } else {
             $mensagem = urlencode("Ocorreu um erro ao atualizar o perfil. Tente novamente.");
-            header('Location: /gamehub/perfil/' . urlencode($nomeUsuarioAtual) . '/editar?erro=1&msg=' . $mensagem);
+            header('Location: /editar?erro=1&msg=' . $mensagem);
         }
         exit;
+    }
+
+    public function excluir() {
+        session_start();
+
+        // 1. Verificar se o usuário está logado e é um administrador
+        if (!isset($_SESSION['logged']) || !($_SESSION['admin'])) {
+            $mensagem = urlencode("Acesso negado. Você não tem permissão para realizar esta ação.");
+            header("Location: /mensagem?msg=$mensagem");
+            exit;
+        }
+
+        // 2. Obter o ID do usuário a ser excluído da URL (GET) ou formulário (POST)
+        // Usaremos GET para simplificar o link do delete, mas POST seria mais robusto
+        $userIdToDelete = $_GET['id'] ?? null;
+
+        if (!$userIdToDelete || !is_numeric($userIdToDelete)) {
+            $mensagem = urlencode("ID do usuário inválido para exclusão.");
+            header("Location: /admin/dashboard?status=error&msg=$mensagem"); // Redireciona de volta ao dashboard
+            exit;
+        }
+
+        // 3. Opcional: Impedir que o admin se exclua
+        if ($userIdToDelete == $_SESSION['user-id']) {
+            $mensagem = urlencode("Você não pode excluir sua própria conta através do painel de administração.");
+            header("Location: /admin?sucesso=false&msg=$mensagem");
+            exit;
+        }
+
+        // 4. Chamar o método de exclusão do modelo
+        $usuario = new Usuario();
+        if ($usuario->excluirUsuario($userIdToDelete)) {
+            $mensagem = urlencode("Usuário excluído com sucesso!");
+            header("Location: /admin?sucesso=true&msg=$mensagem");
+            exit;
+        } else {
+            $mensagem = urlencode("Erro ao excluir usuário. Tente novamente.");
+            header("Location: /admin?sucesso=false&msg=$mensagem");
+            exit;
+        }
+    }
+
+    public function exibirUsuarios() {
+        $usuario = new Usuario();
+        $listaUsuarios = $usuario->listarTodosUsuarios();
+        return $listaUsuarios;
     }
 }

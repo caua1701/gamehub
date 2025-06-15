@@ -116,4 +116,16 @@ class Usuario {
         $stmt = $this->conn->prepare("UPDATE usuario SET nome = ?, email = ? WHERE id = ?");
         return $stmt->execute([$nome, $email, $id]);
     }
+
+    public function excluirUsuario($id) {
+        $sql = "DELETE FROM usuario WHERE id = ?";
+        $stmt = $this->conn->prepare($sql);
+        return $stmt->execute([$id]); // Retorna true em caso de sucesso, false em caso de falha
+    }
+
+    public function listarTodosUsuarios() {
+        $sql = "SELECT id, nome, email FROM usuario ORDER BY nome ASC"; // Selecione apenas os campos necessários
+        $stmt = $this->conn->query($sql);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC); // Retorna todos os usuários
+    }
 }

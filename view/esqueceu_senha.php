@@ -23,7 +23,7 @@
         </article>
         <article class="form-login">
             <h2>Recuperar conta</h2>
-            <form action="../controller/RecuperarSenhaController.php" method="post">
+            <form action="/auth/recuperar-conta" method="post">
                 <div>
                     <label for="">Digite o email da sua conta:</label>
                     <input type="email" name="email" id="email" placeholder="Digite seu e-mail" required>

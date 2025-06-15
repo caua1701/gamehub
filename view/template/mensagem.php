@@ -1,14 +1,17 @@
 <?php // view/template/message_popup.php ?>
 
+<?php if ($_GET !== [] && $_GET !== null):?>  
 <div id="messageContainer" class="message-container">
     <span id="messageText"></span>
     <button class="message-close-btn">&times;</button>
 </div>
+<?php endif?>
 
 <style>
     /* Este CSS pode ser movido para assets/css/perfil.css (ou um CSS dedicado) */
     .message-container {
         position: fixed; /* Fixa a mensagem na tela */
+        display: none;
         top: 20px; /* Distância do topo */
         right: 20px; /* Distância da direita */
         z-index: 1000; /* Garante que fique acima de outros elementos */

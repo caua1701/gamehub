@@ -1,8 +1,10 @@
 <style>
+    @import url("global.css");
     header {
         width: 100%;
         background-color: var(--cor-secundaria);
         padding: 5px;
+        position: relative;
     }
 
     nav {
@@ -36,11 +38,28 @@
         border-radius: 10px;
         outline: 0;
     }
+
+    .btn-admin div{
+        padding: 15px;
+        font-size: 1.125rem;
+        background-color: var(--cor-fundo);
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100px;
+        height: 100%;
+    }
+
+    .bnt-admin div:hover {
+        background-color: var(--cor-secundaria);
+        cursor: pointer;
+    }
+
 </style>
 
 <header>
     <nav>
-        <img src="../assets/img/logo.png" alt="" width="60px">
+        <img src="/assets/img/logo.png" alt="" width="50px">
         <form class="busca" action="">
             <input type="text" name="" id="" placeholder="Procurar jogos">
         </form>
@@ -48,4 +67,9 @@
             C
         </div>
     </nav>
+    <?php
+    session_start();
+    if ($_SESSION['admin']):?>
+        <a class="btn-admin" href="/admin"><div>Admin</div></a>
+    <?php endif ?>
 </header>

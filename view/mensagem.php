@@ -50,7 +50,7 @@ else {
 <body>
     <div class="caixa">
         <h2><?php echo $mensagem; ?></h2>
-        <a href="/gamehub/login" class="botao-voltar">Voltar para o login</a>
+        <a href="/login" class="botao-voltar">Voltar para o login</a>
     </div>
 </body>
 </html>

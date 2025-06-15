@@ -1,5 +1,6 @@
 <?php
-include 'view/template/header.php';
+$root = $_SERVER['DOCUMENT_ROOT'];
+include $root.'/view/template/header.php';
 
 session_start();
 
@@ -7,7 +8,7 @@ if (isset($_SESSION['logged']) && $_SESSION['logged']) {
     $user_id = $_SESSION['user-id'];
     $user_name = $_SESSION['user-name'];
 } else {
-    header('Location: /gamehub/login');
+    header('Location: /login');
     exit;
 }
 ?>
@@ -19,13 +20,23 @@ if (isset($_SESSION['logged']) && $_SESSION['logged']) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Perfil - <?php echo htmlspecialchars($dados['nome'])?></title>
-    <link rel="stylesheet" href="../assets/css/perfil.css">
+    <link rel="stylesheet" href="/assets/css/perfil.css">
 </head>
 
 <body>
     <section>
         <div class="perfil">
-            <img class="img-banner" src="../assets/img/banner.png" alt="Banner do perfil">
+        <?php
+            if (isset($dados['id']) && $dados['id'] == $_SESSION['user-id']) {
+            ?>
+                <a href="/editar">
+                    <img class="img-edit" src="/assets/img/settings.svg" alt="Editar Perfil" width="30px">
+                </a>
+            <?php
+            }
+            ?>
+            
+            <!-- <img class="img-banner" src="/assets/img/banner.png" alt="Banner do perfil"> -->
             <div class="user-perfil">
                 <div class="foto-perfil">
                     C
@@ -34,7 +45,7 @@ if (isset($_SESSION['logged']) && $_SESSION['logged']) {
                 <?php
                 if (isset($dados['id']) && $dados['id'] == $_SESSION['user-id']) {
                 ?>
-                    <a href="/gamehub/logout">Sair</a>
+                    <a href="/logout">Sair</a>
                 <?php
                 }
                 ?>
@@ -53,30 +64,19 @@ if (isset($_SESSION['logged']) && $_SESSION['logged']) {
                 <a href="perfil-jogos.html">
                     <li id="aba-atual">Jogos</li>
                 </a>
-                <?php
-                // Certifique-se de que a sessão está iniciada e o usuário está logado
-                // E que o ID do perfil sendo visualizado é o mesmo do usuário logado
-                if (isset($dados['id']) && $dados['id'] == $_SESSION['user-id']) {
-                ?>
-                    <a href="/gamehub/perfil/<?php echo htmlspecialchars($user_name); ?>/editar">
-                        <li>Editar</li>
-                    </a>
-                <?php
-                }
-                ?>
             </ul>
         </div>
         <div class="lista-jogos">
-            <img src="../assets/img/jogo2.png" alt="Jogo 2">
-            <img src="../assets/img/jogo1.png" alt="Jogo 1">
-            <img src="../assets/img/jogo3.png" alt="Jogo 3">
-            <img src="../assets/img/jogo4.png" alt="Jogo 4">
-            <img src="../assets/img/jogo5.png" alt="Jogo 5">
-            <img src="../assets/img/jogo6.png" alt="Jogo 6">
-            <img src="../assets/img/jogo7.png" alt="Jogo 7">
-            <img src="../assets/img/jogo8.png" alt="Jogo 8">
-            <img src="../assets/img/jogo9.png" alt="Jogo 9">
-            <img src="../assets/img/jogo10.png" alt="Jogo 10">
+            <img src="/assets/img/jogo2.png" alt="Jogo 2">
+            <img src="/assets/img/jogo1.png" alt="Jogo 1">
+            <img src="/assets/img/jogo3.png" alt="Jogo 3">
+            <img src="/assets/img/jogo4.png" alt="Jogo 4">
+            <img src="/assets/img/jogo5.png" alt="Jogo 5">
+            <img src="/assets/img/jogo6.png" alt="Jogo 6">
+            <img src="/assets/img/jogo7.png" alt="Jogo 7">
+            <img src="/assets/img/jogo8.png" alt="Jogo 8">
+            <img src="/assets/img/jogo9.png" alt="Jogo 9">
+            <img src="/assets/img/jogo10.png" alt="Jogo 10">
         </div>
     </section>
 </body>

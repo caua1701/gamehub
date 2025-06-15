@@ -2,7 +2,7 @@
 session_start();
 
 if (isset($_SESSION['logged']) && $_SESSION['logged']) {
-    header('Location: /gamehub/');
+    header('Location: /');
 }
 ?>
 
@@ -13,20 +13,20 @@ if (isset($_SESSION['logged']) && $_SESSION['logged']) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Entrar na conta</title>
-    <link rel="stylesheet" href="assets/css/cadastro.css">
+    <link rel="stylesheet" href="/assets/css/cadastro.css">
 </head>
 
 <body>
     <main class="login">
 
         <article class="introducao">
-            <span class="link-volta">Não possui conta? <a href="/gamehub/cadastro">Clique aqui</a></span>
-            <img src="assets/img/logo.png" alt="" width="300px">
+            <span class="link-volta">Não possui conta? <a href="/cadastro">Clique aqui</a></span>
+            <img src="/assets/img/logo.png" alt="" width="300px">
             <h1>Conecte a milhares de jogadores ao redor do mundo no Gamehub.</h1>
         </article>
         <article class="form-login">
             <h2>Login</h2>
-            <form method="post" action="/gamehub/auth/login">
+            <form method="post" action="/auth/login">
                 <div>
                     <label for="email">Email:</label>
                     <input type="email" name="email" id="email" required>
@@ -40,7 +40,7 @@ if (isset($_SESSION['logged']) && $_SESSION['logged']) {
                 </div>
             </form>
             <div>
-                <h3><a href="esqueceu_senha.php">Esqueceu a senha?</a></h3>
+                <h3><a href="/esqueceu-senha">Esqueceu a senha?</a></h3>
             </div>
         </article>
     </main>

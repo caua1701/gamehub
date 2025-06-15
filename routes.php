@@ -2,59 +2,57 @@
 
 $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 $method = $_SERVER['REQUEST_METHOD'];
+$root = $_SERVER['DOCUMENT_ROOT'];
 
 // Rota dinâmica para perfil de usuário
-if (preg_match('#^/gamehub/perfil/([^/]+)$#', $uri, $matches)) {
+if (preg_match('#^/perfil/([^/]+)$#', $uri, $matches)) {
     $slug = $matches[1]; // Ex: "teste"
-    require 'controller/AuthController.php';
+    require $root.'/controller/AuthController.php';
     $controller = new AuthController();
     $controller->mostrarPerfil($slug);
     exit;
 }
 
-// Editar perfil: /gamehub/perfil/slug/editar
-if (preg_match('#^/gamehub/perfil/([a-zA-Z0-9-_]+)/editar$#', $uri, $matches)) {
-    $slug = $matches[1];
-    require 'controller/AuthController.php';
-    $controller = new AuthController();
-    $controller->editarPerfil($slug);
-    exit;
-}
+// Editar perfil: /perfil/slug/editar
+// if (preg_match('#^/perfil/([a-zA-Z0-9-_]+)/editar$#', $uri, $matches)) {
+//     $slug = $matches[1];
+    
+// }
 
 switch ($uri) {
-    case '/gamehub/':
+    case '/':
         session_start();
         if (isset($_SESSION['user-name'])) {
             // Redireciona para o perfil do próprio usuário
             $nome = $_SESSION['user-name'];
-            header("Location: /gamehub/perfil/$nome");
+            header("Location: /perfil/$nome");
         }
         else {
-            header('Location: /gamehub/login');
+            header('Location: /login');
             
         }
         exit;
 
-    case '/gamehub/admin':
+    case '/admin':
         session_start();
         // Verifica se a sessão está ativa e se o usuário é um administrador
         if (isset($_SESSION['logged']) && $_SESSION['logged'] && ($_SESSION['admin'])) {
             // Inclua a view do painel de administração
-            require 'view/admin.php';
+            require $root.'/view/admin.php';
         } else {
             http_response_code(403); // Status code 403 Forbidden (Acesso Proibido)
             echo "Acesso negado. Você não tem permissão para acessar esta página.";
         }
         exit; // Importante para parar a execução após lidar com a rota
 
-    case '/gamehub/cadastro':
+    case '/cadastro':
         // Mostra a página de login
-        require 'view/cadastro.php';
+        require $root.'/view/cadastro.php';
         exit;
 
-    case '/gamehub/auth/cadastro':
+    case '/auth/cadastro':
         if ($method === 'POST') {
-            require 'controller/AuthController.php';
+            require $root.'/controller/AuthController.php';
             $controller = new AuthController();
             $controller->cadastrar(); // processa o formulário
         } else {
@@ -62,14 +60,38 @@ switch ($uri) {
             echo "Método não permitido";
         }
         exit;
-    case '/gamehub/login':
+    case '/login':
         // Mostra a página de login
-        require 'view/login.php';
+        require $root.'/view/login.php';
+        exit;
+    case '/esqueceu-senha':
+        // Mostra a página de login
+        require $root.'/view/esqueceu_senha.php';
+        exit;
+    case '/auth/recuperar-conta':
+        if ($method === 'POST') {
+            require $root.'/controller/AuthController.php';
+            $controller = new AuthController();
+            $controller->recuperarConta(); // processa o formulário
+        } else {
+            http_response_code(405);
+            echo "Método não permitido";
+        }
+        exit;
+    case '/auth/redefinir-senha':
+        if ($method === 'POST') {
+            require $root.'/controller/AuthController.php';
+            $controller = new AuthController();
+            $controller->redefinirSenha(); // processa o formulário
+        } else {
+            http_response_code(405);
+            echo "Método não permitido";
+        }
         exit;
 
-    case '/gamehub/auth/login':
+    case '/auth/login':
         if ($method === 'POST') {
-            require 'controller/AuthController.php';
+            require $root.'/controller/AuthController.php';
             $controller = new AuthController();
             $controller->login(); // processa o formulário
         } else {
@@ -77,20 +99,38 @@ switch ($uri) {
             echo "Método não permitido";
         }
         exit;
-    case "/gamehub/logout":
-        require 'controller/AuthController.php';
+    case "/logout":
+        require $root.'/controller/AuthController.php';
         $controller = new AuthController();
         $controller->logout(); // processa o formulário
         exit;
-    case "/gamehub/mensagem":
-        require 'view/mensagem.php';
+    case "/mensagem":
+        require $root.'/view/mensagem.php';
         exit;
 
-    case "/gamehub/atualizar-perfil":
+    case "/editar":
+        require $root.'/controller/AuthController.php';
+        $controller = new AuthController();
+        $controller->editarPerfil();
+        exit;
+
+
+    case "/atualizar-perfil":
         if ($method === 'POST') {
-            require 'controller/AuthController.php';
+            require $root.'/controller/AuthController.php';
             $controller = new AuthController();
             $controller->salvarEdicao();
+        }
+        exit;
+
+    case '/admin/excluir-usuario': // NOVA ROTA PARA EXCLUSÃO
+        if ($method === 'GET') { // Usamos GET para simplificar o link de exclusão com ID
+            require $root.'/controller/AuthController.php';
+            $controller = new AuthController();
+            $controller->excluir(); // Chama o método de exclusão
+        } else {
+            http_response_code(405);
+            echo "Método não permitido.";
         }
         exit;
     default:

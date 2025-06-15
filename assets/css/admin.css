@@ -4,44 +4,6 @@ body{
    padding-bottom: 50px;
 }
 
-header {
-   width: 100%;
-   background-color: var(--cor-secundaria);
-   padding: 10px;
-}
-
-nav {
-   max-width: 1200px;
-   display: grid;
-   grid-template-columns: auto 1fr auto;
-   gap: 50px;
-   align-items: center;
-   margin: auto;
-}
-
-.foto-perfil-header {
-   width: 60px;
-   height: 60px;
-   border-radius: 100px;
-   background-color: aqua;
-   text-align: center;
-   display: flex;
-   justify-content: center;
-   align-items: center;
-   font-size: 1.5rem;
-}
-
-form input {
-   width: 100%;
-   max-height: 60px;
-   padding: 20px 30px;
-   font-size: 1.5rem;
-   background-color: var(--cinza-input);
-   border: none;
-   border-radius: 10px;
-   outline: 0;
-}
-
 .titulo-admin {
     max-width: 1200px;
     margin: 50px 0;
@@ -107,8 +69,10 @@ form input {
 }
 
 .lista-usuarios {
+   border-radius: 5px;
    margin-top: 50px;
    max-width: 100%;
+   background-color: var(--cinza-claro);
 }
 
 .editar-perfil {
@@ -147,7 +111,6 @@ form input {
    font-size: 1.25rem;
    justify-content: space-between;
    padding: 20px;
-   background-color: var(--cinza-claro);
 }
 
 .usuarios li:nth-child(even) {
@@ -155,11 +118,17 @@ form input {
 }
 
 .usuario {
-   display: flex;
+   display: grid;
+   grid-template-columns: 1fr 2fr;
+   width: 100%;
    gap: 20px;
    align-items: center;
    color: white;
    font-weight: 500;
+}
+
+.usuario a:hover {
+   color: var(--cor-secundaria);
 }
 
 .foto-perfil-usuario {

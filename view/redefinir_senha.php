@@ -23,12 +23,12 @@ $token = $_GET['token'] ?? '';
 
         <article class="introducao">
             <!-- <span class="link-volta"><a href="cadastro.html">Página de Login</a></span> -->
-            <a href="login.html"><img src="../assets/img/logo.png" alt="" width="300px"></a>
+            <a href="/login"><img src="/assets/img/logo.png" alt="" width="300px"></a>
             <h1>Conecte a milhares de jogadores ao redor do mundo no Gamehub.</h1>
         </article>
         <article class="form-login">
             <h2>Redefinir Senha</h2>
-            <form action="../controller/RedefinirSenhaController.php" method="post">
+            <form action="/auth/redefinir-senha" method="post">
                 <input type="hidden" name="token" value="<?= htmlspecialchars($token) ?>">
                 <div>
                     <label for="nova_senha">Senha nova:</label>
