@@ -68,7 +68,6 @@
         </div>
     </nav>
     <?php
-    session_start();
     if ($_SESSION['admin']):?>
         <a class="btn-admin" href="/admin"><div>Admin</div></a>
     <?php endif ?>
