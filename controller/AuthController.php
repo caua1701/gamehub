@@ -73,14 +73,14 @@ class AuthController
         //Verificando se o nome  usuário já está cadastrado
         if ($usuario->existeUsuario($_POST['nome'])) {
             $mensagem = urlencode("Nome de usuário informado já está cadastrado! Tente outro nome de usuário ou realize o login!");
-            header("Location: /mensagem?msg=$mensagem");
+            header("Location: /cadastro?sucesso=false&msg=$mensagem");
             exit;
         }
 
         //Verificando se o email  usuário já está cadastrado
         if ($usuario->existeEmail($_POST['email'])) {
             $mensagem = urlencode("Email informado já está cadastrado! Tente outro email ou realize o login!");
-            header("Location: /mensagem?msg=$mensagem");
+            header("Location: /cadastro?sucesso=false&msg=$mensagem");
             exit;
         }
 
@@ -114,7 +114,7 @@ class AuthController
             exit;
         } else {
             $mensagem = urlencode("Email ou senha inválidos!");
-            header("Location: /mensagem?msg=$mensagem");
+            header("Location: /login?sucesso=false&msg=$mensagem");
             exit;
         }
     }

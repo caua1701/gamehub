@@ -2,8 +2,6 @@
 $root = $_SERVER['DOCUMENT_ROOT'];
 include $root.'/view/template/header.php';
 
-session_start();
-
 if (isset($_SESSION['logged']) && $_SESSION['logged']) {
     $user_id = $_SESSION['user-id'];
     $user_name = $_SESSION['user-name'];

@@ -22,7 +22,7 @@ if (isset($_SESSION['logged']) && $_SESSION['logged']) {
 <body>
     <main class="login">
         <article class="introducao">
-            <span class="link-volta">Tem conta? <a href="login.php">Clique aqui</a></span>
+            <span class="link-volta">Tem conta? <a href="/login">Clique aqui</a></span>
             <img src="/assets/img/logo.png" alt="" width="300px">
             <h1>Conecte a milhares de jogadores ao redor do mundo no Gamehub.</h1>
         </article>
