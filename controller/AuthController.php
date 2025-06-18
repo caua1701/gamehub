@@ -313,7 +313,7 @@ class AuthController
 
         if (!$userIdToDelete || !is_numeric($userIdToDelete)) {
             $mensagem = urlencode("ID do usuário inválido para exclusão.");
-            header("Location: /admin/dashboard?status=error&msg=$mensagem"); // Redireciona de volta ao dashboard
+            header("Location: /admin?sucesso=false&msg=$mensagem"); // Redireciona de volta ao dashboard
             exit;
         }
 
