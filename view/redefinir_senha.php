@@ -28,7 +28,7 @@ $token = $_GET['token'] ?? '';
         </article>
         <article class="form-login">
             <h2>Redefinir Senha</h2>
-            <form action="/auth/redefinir-senha" method="post">
+            <form action="/auth/redefinir_senha" method="post">
                 <input type="hidden" name="token" value="<?= htmlspecialchars($token) ?>">
                 <div>
                     <label for="nova_senha">Senha nova:</label>
