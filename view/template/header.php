@@ -68,7 +68,7 @@
         </div>
     </nav>
     <?php
-    if ($_SESSION['admin']):?>
+    if (isset($_SESSION['admin'])):?>
         <a class="btn-admin" href="/admin"><div>Admin</div></a>
     <?php endif ?>
 </header>
