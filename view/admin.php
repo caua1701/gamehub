@@ -4,6 +4,11 @@ include $root.'/view/template/header.php';
 include $root.'/view/template/mensagem.php';
 require_once $root.'/controller/AuthController.php';
 
+if ( session_status() !== PHP_SESSION_ACTIVE )
+ {
+    session_start();
+}
+
 //Instanciando o controller, para que seja exibido todos os usuários.
 $controller = new AuthController();
 //Salvando o resultado do método
