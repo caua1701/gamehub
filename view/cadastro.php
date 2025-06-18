@@ -1,4 +1,7 @@
 <?php
+$root = $_SERVER['DOCUMENT_ROOT'];
+include $root.'/view/template/mensagem.php';
+
 session_start();
 
 if (isset($_SESSION['logged']) && $_SESSION['logged']) {

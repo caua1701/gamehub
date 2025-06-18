@@ -1,11 +1,11 @@
 <?php // view/template/message_popup.php ?>
 
-<?php if ($_GET !== [] && $_GET !== null):?>  
+
 <div id="messageContainer" class="message-container">
     <span id="messageText"></span>
     <button class="message-close-btn">&times;</button>
 </div>
-<?php endif?>
+
 
 <style>
     /* Este CSS pode ser movido para assets/css/perfil.css (ou um CSS dedicado) */

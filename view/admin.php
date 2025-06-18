@@ -3,8 +3,10 @@ $root = $_SERVER['DOCUMENT_ROOT'];
 include $root.'/view/template/header.php';
 include $root.'/view/template/mensagem.php';
 require_once $root.'/controller/AuthController.php';
-$controller = new AuthController();
 
+//Instanciando o controller, para que seja exibido todos os usuários.
+$controller = new AuthController();
+//Salvando o resultado do método
 $usuarios = $controller->exibirUsuarios();
 ?>
 
@@ -37,13 +39,17 @@ $usuarios = $controller->exibirUsuarios();
     </div>
     <div class="lista-usuarios">
         <ul class="usuarios">
-            <?php if (empty($usuarios)): ?>
+            <?php 
+            // Se não existir usuário, será exibido que não foi encontrado nenhum usuário
+            if (empty($usuarios)): ?>
                 <li>Nenhum usuário encontrado.</li>
             <?php else: ?>
-                <?php foreach ($usuarios as $usuario):?>
+                <?php 
+                    //Para cada usuário, será exibido o nome, email e o botão de excluir usuário
+                    foreach ($usuarios as $usuario):?>
                     <li>
                         <div class="usuario">
-                            <a href="<?= '/perfil/'.$usuario['nome'];?>" target="__blank">Nome: <?= htmlspecialchars($usuario['nome']) ?></a>
+                            <p>Nome: <?= htmlspecialchars($usuario['nome']) ?></p>
                             <p>Email: <?=htmlspecialchars($usuario['email'])?></p>
                         </div>
                         <div class="acoes">
@@ -68,7 +74,7 @@ $usuarios = $controller->exibirUsuarios();
                 event.preventDefault();
 
                 const userName = this.dataset.userName; // Pega o nome do usuário do atributo data-user-name
-                const confirmMessage = `Tem certeza que deseja excluir o usuário "${userName}"? Esta ação é irreversível.`;
+                const confirmMessage = `Tem certeza que deseja excluir o usuário? Esta ação é irreversível.`;
 
                 // Exibe o popup de confirmação
                 if (confirm(confirmMessage)) {

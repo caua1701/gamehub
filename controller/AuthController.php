@@ -1,36 +1,103 @@
 <?php
 $root = $_SERVER['DOCUMENT_ROOT'];
 
-require_once $root.'/model/Usuario.php';
-require_once $root.'/utils/EmailHelper.php';
+require_once $root . '/model/Usuario.php';
+require_once $root . '/utils/EmailHelper.php';
 
-class AuthController {
-    public function cadastrar() {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $usuario = new Usuario();
-            
-            if ($usuario->existeUsuario($_POST['nome'])) {
-                $mensagem = urlencode("Nome de usuário informado já está cadastrado! Tente outro nome de usuário ou realize o login!");
-                header("Location: /mensagem?msg=$mensagem");
-                exit;
-            }
-    
-            if ($usuario->existeEmail($_POST['email'])) {
-                $mensagem = urlencode("Email informado já está cadastrado! Tente outro email ou realize o login!");
-                header("Location: /mensagem?msg=$mensagem");
-                exit;
-            }
+class AuthController
+{
+    public function validarCampos($nome, $email, $senha, $validarSenha)
+    {
+        // --- VALIDAÇÕES DE NOME ---
+        // 1. Não vazio
+        if (empty($nome)) {
+            return "O nome de usuário não pode ser vazio.";
+        }
 
-            $usuario->setNomeUsuario($_POST["nome"]);
-            $usuario->setEmail($_POST["email"]);
-            $usuario->setSenha($_POST["senha"]);
-            $usuario->cadastrar();
-            header("Location: /login");
-            exit;
+        // 2. Caracteres permitidos (letras, números, underscore e hífen)
+        if (!preg_match('/^[a-zA-Z0-9_-]+$/', $nome)) {
+            return "O nome de usuário só pode conter letras, números, hífens e underscores.";
+        }
+
+        // --- VALIDAÇÕES DE EMAIL ---
+        // 1. Não vazio
+        if (empty($email)) {
+            return "O e-mail não pode ser vazio.";
+        }
+
+        // 2. Verificar o formato do email.
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            return "Formato de e-mail inválido.";
+        }
+
+        // --- VALIDAÇÕES DE SENHA ---
+        // 1. Não vazio
+        if ($validarSenha) {
+            if (empty($senha)) {
+                return "A senha não pode ser vazia.";
+            }
+            // 2. Mínimo de 8 caracteres
+            if (strlen($senha) < 8) {
+                return "A senha deve ter no mínimo 8 caracteres.";
+            }
         }
     }
+    
+    public function cadastrar()
+    {
+        //Verificando se todos os campos foram preechidos, caso não, exibir mensagem pop-up
+        if (!isset($_POST['nome']) || !isset($_POST['email']) || !isset($_POST['senha'])) {
+            $mensagem = urlencode("Todos os campos são obrigatórios!");
+            header("Location: /cadastro?sucesso=false&msg=$mensagem");
+            exit;
+        }
 
-    public function login() {
+        //Salvando os campos nas variáveis
+        $nome = $_POST['nome'];
+        $email = $_POST['email'];
+        $senha = $_POST['senha'];
+
+        //Executando validação
+        $resultado = $this->validarCampos($nome, $email, $senha, true);
+
+        //Se retornar alguma mensagem, é porque deu algum erro
+        if ($resultado) {
+            $mensagem = urlencode($resultado);
+            header("Location: /cadastro?sucesso=false&msg=$mensagem");
+            exit;
+        }
+
+        //Instanciando o model Usuário
+        $usuario = new Usuario();
+
+        //Verificando se o nome  usuário já está cadastrado
+        if ($usuario->existeUsuario($_POST['nome'])) {
+            $mensagem = urlencode("Nome de usuário informado já está cadastrado! Tente outro nome de usuário ou realize o login!");
+            header("Location: /mensagem?msg=$mensagem");
+            exit;
+        }
+
+        //Verificando se o email  usuário já está cadastrado
+        if ($usuario->existeEmail($_POST['email'])) {
+            $mensagem = urlencode("Email informado já está cadastrado! Tente outro email ou realize o login!");
+            header("Location: /mensagem?msg=$mensagem");
+            exit;
+        }
+
+        //Se tudo ocorrer certo, irá salvar os campos nas variáveis do model
+        $usuario->setNomeUsuario($nome);
+        $usuario->setEmail($email);
+        $usuario->setSenha($senha);
+
+        //Executa 
+        $usuario->cadastrar();
+        header("Location: /login");
+        exit;
+
+    }
+
+    public function login()
+    {
         $usuario = new Usuario();
         $resultado = $usuario->autenticar($_POST['email'], $_POST['senha']);
 
@@ -45,24 +112,25 @@ class AuthController {
             }
             header('Location: /');
             exit;
-        }
-        else {
+        } else {
             $mensagem = urlencode("Email ou senha inválidos!");
             header("Location: /mensagem?msg=$mensagem");
             exit;
         }
     }
 
-    public function logout() {
+    public function logout()
+    {
         session_start();
         $_SESSION = [];
         session_destroy();
         header('Location: /login');
         exit;
     }
-    
 
-    public function recuperarConta() {
+
+    public function recuperarConta()
+    {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $usuario = new Usuario();
             $email = $_POST['email'];
@@ -79,7 +147,7 @@ class AuthController {
                 <p>Olá, clique no link abaixo para redefinir sua senha (válido por 1 hora):</p>
                 <p><a href='$link'>Redefinir senha</a></p>
                 ";
-                
+
                 EmailHelper::enviar($email, "Redefinir Senha!", $mensagem);
             }
 
@@ -87,28 +155,43 @@ class AuthController {
         }
     }
 
-    public function redefinirSenha() {
+    public function redefinirSenha()
+    {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $token = $_POST['token'];
             $senhaNova = $_POST['nova_senha'];
-            $usuario = new Usuario();
 
-            $resultado = $usuario->verificarToken( $token);
+            // --- VALIDAÇÕES DE SENHA ---
+            // 1. Não vazio
+            if (empty($senhaNova)) {
+                $mensagem = urlencode("A senha nova não pode ser vazia.");
+                header("Location: /redefinir-senha?sucesso=false&msg=$mensagem");
+                exit;
+            }
+            // 2. Mínimo de 8 caracteres
+            if (strlen($senhaNova) < 8) {
+                $mensagem = urlencode("A senha nova deve ter no mínimo 8 caracteres.");
+                header("Location: /redefinir-senha?sucesso=false&msg=$mensagem");
+                exit;
+            }
+            
+            $usuario = new Usuario();
+            $resultado = $usuario->verificarToken($token);
 
             if ($resultado) {
                 $novaSenhaHash = password_hash($senhaNova, PASSWORD_DEFAULT);
-                $usuario->atualizarSenha( $resultado['id'], $novaSenhaHash );
+                $usuario->atualizarSenha($resultado['id'], $novaSenhaHash);
 
                 header('Location: /');
                 exit;
-            }
-            else {
+            } else {
                 header('Location: /mensagem?msg=Token Inválido ou expirado.');
             }
         }
     }
 
-    public function mostrarPerfil($nomeUsuario) {
+    public function mostrarPerfil($nomeUsuario)
+    {
         $usuario = new Usuario();
         $dados = $usuario->buscarPorNome($nomeUsuario);
 
@@ -121,7 +204,8 @@ class AuthController {
         }
     }
 
-    public function editarPerfil() {
+    public function editarPerfil()
+    {
         session_start();
 
         // Verifica se está logado
@@ -137,28 +221,37 @@ class AuthController {
         exit;
     }
 
-    public function salvarEdicao() {
+    public function salvarEdicao()
+    {
         session_start();
-     
+
         if (!isset($_SESSION['logged'])) {
             header('Location: /login');
             exit;
         }
-     
+
         // Verifica se o ID enviado é o mesmo do usuário logado
         if ($_POST['id'] != $_SESSION['user-id']) {
             header('Location: /mensagem?msg=Acesso não autorizado.');
             exit;
         }
-     
+
         $idUsuario = $_SESSION['user-id']; // Use o ID da sessão para segurança
-        $nomeNovo = trim($_POST['nome']); // Use trim para remover espaços em branco
-        $emailNovo = trim($_POST['email']);
-     
+        $nomeNovo = $_POST['nome']; // Use trim para remover espaços em branco
+        $emailNovo = $_POST['email'];
+
         // (Opcional) Validações básicas
         if (empty($nomeNovo) || empty($emailNovo)) {
             $mensagem = urlencode("Todos os campos são obrigatórios.");
             header('Location: /mensagem?msg=' . $mensagem);
+            exit;
+        }
+
+        $resultado = $this->validarCampos($nomeNovo, $emailNovo, null, false);
+
+        if ($resultado) {
+            $mensagem = urlencode($resultado);
+            header("Location: /editar?sucesso=false&msg=$mensagem");
             exit;
         }
 
@@ -177,7 +270,7 @@ class AuthController {
                 exit;
             }
         }
-        
+
         // 3. Verificar se o novo email é diferente do atual
         // Se for diferente, verificar se o novo email já existe
         if ($emailNovo !== $dadosAtuais['email']) {
@@ -190,7 +283,7 @@ class AuthController {
 
         // 4. Atualizar os dados no banco de dados
         $sucesso = $usuario->atualizarDados($idUsuario, $nomeNovo, $emailNovo);
-     
+
         if ($sucesso) {
             // 5. Se a atualização foi bem-sucedida, atualizar a sessão
             $_SESSION['user-name'] = $nomeNovo;
@@ -203,7 +296,8 @@ class AuthController {
         exit;
     }
 
-    public function excluir() {
+    public function excluir()
+    {
         session_start();
 
         // 1. Verificar se o usuário está logado e é um administrador
@@ -243,9 +337,12 @@ class AuthController {
         }
     }
 
-    public function exibirUsuarios() {
+    public function exibirUsuarios()
+    {
+        //Instanciando a classe e executando o método
         $usuario = new Usuario();
         $listaUsuarios = $usuario->listarTodosUsuarios();
+        //Retorna o resultado para a página admin.php
         return $listaUsuarios;
     }
 }

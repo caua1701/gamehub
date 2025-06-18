@@ -20,7 +20,7 @@ class EmailHelper {
             $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
             $mail->Port = 587;
 
-            $mail->setFrom('obsidiangames1503@gmail.com', 'Suporte MisterCaua');
+            $mail->setFrom('obsidiangames1503@gmail.com', 'Suporte Gamehub');
             $mail->addAddress($para);
             $mail->isHTML(true);
             $mail->Subject = $assunto;
